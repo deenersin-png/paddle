@@ -290,21 +290,20 @@ header {
 .card.day-Saturday::before { background:var(--blue); }
 
 .card-head {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px 14px 14px 17px;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0;
   border-bottom:1px solid var(--line);
   background:var(--ink3);
-  justify-content: space-between;
+  min-height: 100px;
 }
 
 .card-head-left {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex: 1;
-  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  border-right: 1px solid var(--line);
 }
 
 .run-num {
@@ -313,47 +312,49 @@ header {
   font-weight:700;
   color:var(--amber);
   line-height:1;
-  min-width:66px;
-  flex-shrink: 0;
+  text-align: center;
 }
 
 .card.day-Sunday .run-num { color:var(--green); }
 .card.day-Weekday .run-num { color:var(--amber); }
 .card.day-Saturday .run-num { color:var(--blue); }
 
-.run-meta { 
-  flex:1;
-  min-width:0;
+.card-head-right {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+
+.card-head-top {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
 }
 
 .run-routes {
   font-family:var(--mono);
-  font-size:15px;
+  font-size:13px;
   font-weight:600;
   color:var(--bright);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  letter-spacing:.02em;
+  letter-spacing:.01em;
 }
 
-.card-head-right {
+.card-head-bottom {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 14px;
+  gap: 8px;
 }
 
 .run-day {
-  font-size:11px;
+  font-size:12px;
   font-weight:600;
   letter-spacing:.08em;
   text-transform:uppercase;
   color:var(--amber);
+  flex-shrink: 0;
 }
 
 .card.day-Sunday .run-day { color:var(--green); }
@@ -375,6 +376,7 @@ header {
   gap:4px;
   transition:all .15s;
   white-space:nowrap;
+  flex-shrink: 0;
 }
 
 .btn-paddle.show {
@@ -645,7 +647,7 @@ header {
   }
   
   .run-routes {
-    font-size: 14px;
+    font-size: 12px;
   }
   
   .stat-val {
@@ -662,17 +664,8 @@ header {
   }
 
   .card-head {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .card-head-left {
-    width: 100%;
-  }
-
-  .card-head-right {
-    align-items: flex-start;
-    width: 100%;
+    grid-template-columns: 70px 1fr;
+    min-height: auto;
   }
 }
 
@@ -697,6 +690,14 @@ header {
   }
   
   .seg-times {
+    font-size: 11px;
+  }
+
+  .card-head {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .run-routes {
     font-size: 11px;
   }
 }
@@ -1111,13 +1112,15 @@ function render() {
         <div class="card-head">
           <div class="card-head-left">
             <div class="run-num">${run.runno}</div>
-            <div class="run-meta">
-              <div class="run-routes">${routesDisplay || '—'}</div>
-            </div>
           </div>
           <div class="card-head-right">
-            <div class="run-day">${run.day}</div>
-            <div class="run-actions">${paddleBtn}</div>
+            <div class="card-head-top">
+              <div class="run-routes">${routesDisplay || '—'}</div>
+            </div>
+            <div class="card-head-bottom">
+              <div class="run-day">${run.day}</div>
+              <div class="run-actions">${paddleBtn}</div>
+            </div>
           </div>
         </div>
         <div class="stats-row">
