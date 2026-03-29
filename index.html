@@ -389,12 +389,19 @@ header {
 @media (max-width: 768px) {
   .card-head-top {
     justify-content: flex-start;
-    gap: 6px;
-    padding: 6px 12px;
+    gap: 4px;
+    padding: 5px 8px;
+    flex-wrap: wrap;
+  }
+
+  .run-day {
+    font-size: 10px;
+    letter-spacing: .06em;
   }
 
   .run-num-label {
     display: inline;
+    font-size: 10px;
   }
 
   .run-num {
@@ -404,6 +411,14 @@ header {
   .btn-paddle {
     font-size: 8px;
     padding: 2px 4px;
+  }
+
+  .card-head-bottom {
+    padding: 4px 8px;
+  }
+
+  .run-routes {
+    font-size: 10px;
   }
 }
 
@@ -483,7 +498,7 @@ header {
   font-size:10px;
   color:var(--mid);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2px;
 }
 
