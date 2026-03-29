@@ -10,11 +10,6 @@
       "label": "Midvale",
       "days": ["Weekday", "Saturday", "Sunday"]
     },
-    {
-      "name": "southern",
-      "label": "Southern",
-      "days": ["Weekday", "Saturday", "Sunday"]
-    }
   ]
 }
 
