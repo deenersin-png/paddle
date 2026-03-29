@@ -9,7 +9,7 @@
       "name": "midvale",
       "label": "Midvale",
       "days": ["Weekday", "Saturday", "Sunday"]
-    },
+    }
   ]
 }
 
