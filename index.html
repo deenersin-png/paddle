@@ -767,6 +767,7 @@ header {
     <option value="start-desc">Latest Start</option>
     <option value="finish-asc">Earliest Finish</option>
     <option value="finish-desc">Latest Finish</option>
+    <option value="swing-desc">Swing (Longest)</option>
   </select>
 
   <div class="result-line"><strong id="res-n">0</strong> runs</div>
@@ -985,6 +986,7 @@ function render() {
     else if (sk === 'pay') { av = parseFloat(a.pay) || 0; bv = parseFloat(b.pay) || 0; }
     else if (sk === 'start') { av = parseFullDateTime(a.start).getTime(); bv = parseFullDateTime(b.start).getTime(); }
     else if (sk === 'finish') { av = parseFullDateTime(a.finish).getTime(); bv = parseFullDateTime(b.finish).getTime(); }
+    else if (sk === 'swing') { av = parseInt(a.swingdursec) || 0; bv = parseInt(b.swingdursec) || 0; }
     return sd === 'asc' ? av - bv : bv - av;
   });
 
