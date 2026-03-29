@@ -387,40 +387,48 @@ header {
 
 /* Mobile Responsive Header */
 @media (max-width: 768px) {
+  .card-head {
+    grid-template-rows: auto auto;
+  }
+
   .card-head-top {
-    justify-content: flex-start;
-    gap: 3px;
-    padding: 4px 8px;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 6px 12px;
     flex-wrap: nowrap;
+    border-bottom: 1px solid var(--line);
   }
 
   .run-day {
-    font-size: 9px;
-    letter-spacing: .05em;
+    font-size: 11px;
+    letter-spacing: .08em;
     flex-shrink: 0;
   }
 
   .run-num-label {
-    display: none;
+    display: inline;
+    font-size: 11px;
+    flex-shrink: 0;
   }
 
   .run-num {
-    font-size: 13px;
+    font-size: 16px;
     flex-shrink: 0;
   }
 
   .btn-paddle {
-    font-size: 7px;
-    padding: 2px 3px;
+    font-size: 9px;
+    padding: 3px 6px;
     flex-shrink: 0;
   }
 
   .card-head-bottom {
-    padding: 4px 8px;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--line);
   }
 
   .run-routes {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
