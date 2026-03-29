@@ -892,7 +892,8 @@ async function changeDistrict() {
         const pdfData = parseCSV(csvText);
         pdfData.forEach(row => {
           const runno = row.runno || '';
-          if (runno) STATE.pdfLinks[runno] = { moblink: row.moblink || '', pclink: row.pclink || '' };
+          const day = row.day || '';
+          if (runno && day) STATE.pdfLinks[day + '-' + runno] = { moblink: row.moblink || '', pclink: row.pclink || '' };
         });
       }
     } catch (e) { console.log('pdfs.csv not found'); }
@@ -999,7 +1000,7 @@ function render() {
   }
 
   grid.innerHTML = filtered.map(run => {
-    const pdfLink = STATE.pdfLinks[run.runno] || {};
+    const pdfLink = STATE.pdfLinks[run.day + '-' + run.runno] || {};
     const paddleLink = isMobile ? pdfLink.moblink : pdfLink.pclink;
     const paddleBtn = paddleLink
       ? `<a class="btn-paddle show" href="${paddleLink}" target="_blank">PADDLE ↗</a>`
