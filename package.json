@@ -1,5 +1,5 @@
 {
-  "name": "septa-scheduler",
+  "name": "paddle",
   "version": "1.0.0",
   "description": "SEPTA Bus Schedule Viewer",
   "main": "index.html",
