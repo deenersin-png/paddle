@@ -292,10 +292,19 @@ header {
 .card-head {
   display:flex;
   align-items:center;
-  gap:0;
+  gap:12px;
   padding:14px 14px 14px 17px;
   border-bottom:1px solid var(--line);
   background:var(--ink3);
+  justify-content: space-between;
+}
+
+.card-head-left {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex: 1;
+  min-width: 0;
 }
 
 .run-num {
@@ -305,30 +314,24 @@ header {
   color:var(--amber);
   line-height:1;
   min-width:66px;
+  flex-shrink: 0;
 }
 
 .card.day-Sunday .run-num { color:var(--green); }
 .card.day-Weekday .run-num { color:var(--amber); }
 .card.day-Saturday .run-num { color:var(--blue); }
 
-.run-meta { flex:1;min-width:0; }
-
-.run-day {
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  margin-bottom:4px;
-  color:var(--amber);
+.run-meta { 
+  flex:1;
+  min-width:0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-
-.card.day-Sunday .run-day { color:var(--green); }
-.card.day-Weekday .run-day { color:var(--amber); }
-.card.day-Saturday .run-day { color:var(--blue); }
 
 .run-routes {
   font-family:var(--mono);
-  font-size:17px;
+  font-size:15px;
   font-weight:600;
   color:var(--bright);
   white-space:nowrap;
@@ -337,11 +340,25 @@ header {
   letter-spacing:.02em;
 }
 
-.run-actions { 
-  display:flex;
-  gap:6px;
-  align-items:center; 
+.card-head-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
 }
+
+.run-day {
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--amber);
+}
+
+.card.day-Sunday .run-day { color:var(--green); }
+.card.day-Weekday .run-day { color:var(--amber); }
+.card.day-Saturday .run-day { color:var(--blue); }
 
 .btn-paddle {
   font-family:var(--mono);
@@ -379,6 +396,10 @@ header {
 .stat {
   padding:12px 14px;
   border-right:1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .stat:last-child{border-right:none;}
@@ -402,18 +423,31 @@ header {
 
 .stat-val.pay { color:var(--amber); }
 
-.swing-badge {
-  display:inline-flex;
-  align-items:center;
-  gap:3px;
-  font-size:10px;
+.swing-section {
+  padding:10px 14px;
+  border-top:1px solid var(--line);
+  background:var(--ink3);
   font-family:var(--mono);
-  background:var(--violet-dim);
+  font-size:13px;
+  color:var(--mid);
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.swing-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.swing-label {
+  color:var(--dim);
+  font-weight: 600;
+}
+
+.swing-value {
   color:var(--violet);
-  border:1px solid rgba(167,139,250,0.2);
-  padding:3px 7px;
-  border-radius:2px;
-  margin-top:4px;
   font-weight: 600;
 }
 
@@ -611,7 +645,7 @@ header {
   }
   
   .run-routes {
-    font-size: 16px;
+    font-size: 14px;
   }
   
   .stat-val {
@@ -625,6 +659,20 @@ header {
   .fchip {
     font-size: 12px;
     padding: 8px 12px;
+  }
+
+  .card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-head-left {
+    width: 100%;
+  }
+
+  .card-head-right {
+    align-items: flex-start;
+    width: 100%;
   }
 }
 
@@ -715,7 +763,7 @@ const DAY_ORDER = ['Sunday', 'Weekday', 'Saturday'];
 let STATE = {
   manifest: null,
   currentDistrict: null,
-  currentDay: 'Weekday', // Default to Weekday
+  currentDay: 'Weekday',
   activeRoutes: new Set(),
   runs: [],
   availableDays: [],
@@ -740,15 +788,14 @@ function parseCSV(csvText) {
     });
 }
 
-// Parse full datetime (handles dates properly)
+// Parse full datetime
 function parseFullDateTime(dateTimeStr) {
   if (!dateTimeStr) return new Date(0);
   try {
-    // Format: "2023-10-11 12:29 AM"
     const parts = dateTimeStr.split(' ');
-    const datePart = parts[0]; // "2023-10-11"
-    const timePart = parts[1]; // "12:29"
-    const ampm = parts[2]; // "AM" or "PM"
+    const datePart = parts[0];
+    const timePart = parts[1];
+    const ampm = parts[2];
     
     const [year, month, day] = datePart.split('-').map(Number);
     const [hours, minutes] = timePart.split(':').map(Number);
@@ -761,6 +808,18 @@ function parseFullDateTime(dateTimeStr) {
   } catch (e) {
     return new Date(0);
   }
+}
+
+// Get all routes from a run
+function getRunRoutes(run) {
+  const routes = [];
+  for (let i = 1; i <= 10; i++) {
+    const route = run['r' + i];
+    if (route && route.trim()) {
+      routes.push(route.trim());
+    }
+  }
+  return routes;
 }
 
 // Load manifest
@@ -805,7 +864,7 @@ async function changeDistrict() {
     STATE.runs = [];
     STATE.availableDays = [];
     STATE.pdfLinks = {};
-    STATE.currentDay = 'Weekday'; // Reset to Weekday on district change
+    STATE.currentDay = 'Weekday';
     
     const districtConfig = STATE.manifest.districts.find(d => d.name === STATE.currentDistrict);
     if (!districtConfig || !districtConfig.days) {
@@ -895,7 +954,6 @@ function changeDay(day) {
   STATE.currentDay = day;
   STATE.activeRoutes.clear();
   
-  // Update active button
   document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
   
@@ -936,9 +994,17 @@ function render() {
 
   let filtered = STATE.runs.filter(r => {
     if (r.day !== STATE.currentDay) return false;
-    if (STATE.activeRoutes.size > 0 && !STATE.activeRoutes.has((r.r1 || '').trim())) return false;
     if (searchRun && String(r.runno || '').trim() !== searchRun) return false;
     if (searchBlock && String(r.b1 || '').trim() !== searchBlock) return false;
+    
+    // NEW ROUTE FILTERING LOGIC
+    if (STATE.activeRoutes.size > 0) {
+      const runRoutes = getRunRoutes(r);
+      // Check if ALL routes in the run are in the active routes set
+      const allRoutesMatch = runRoutes.length > 0 && runRoutes.every(route => STATE.activeRoutes.has(route));
+      if (!allRoutesMatch) return false;
+    }
+    
     return true;
   });
 
@@ -988,6 +1054,11 @@ function render() {
       ? `<a class="btn-paddle show" href="${paddleLink}" target="_blank">PADDLE ↗</a>`
       : '';
 
+    // Get all unique routes
+    const runRoutes = getRunRoutes(run);
+    const uniqueRoutes = [...new Set(runRoutes)];
+    const routesDisplay = uniqueRoutes.join(' | ');
+
     let segsHtml = '';
     for (let i = 1; i <= 10; i++) {
       const r = run['r' + i];
@@ -1015,19 +1086,39 @@ function render() {
       `;
     }
 
-    // Extract time only from full datetime
     const startTime = (run.start || '').split(' ').slice(1, 3).join(' ');
     const finishTime = (run.finish || '').split(' ').slice(1, 3).join(' ');
+
+    // Swing run details
+    let swingHtml = '';
+    if (run.pullout2) {
+      swingHtml = `
+        <div class="swing-section">
+          <div class="swing-item">
+            <span class="swing-label">Swing Duration:</span>
+            <span class="swing-value">${run.swingdur || '—'}</span>
+          </div>
+          <div class="swing-item">
+            <span class="swing-label">Pullout</span>
+            <span class="swing-value">${run.pullout2 || '—'}</span>
+          </div>
+        </div>
+      `;
+    }
 
     return `
       <div class="card day-${run.day}">
         <div class="card-head">
-          <div class="run-num">${run.runno}</div>
-          <div class="run-meta">
-            <div class="run-day">${run.day}</div>
-            <div class="run-routes">${run.r1 || '—'}</div>
+          <div class="card-head-left">
+            <div class="run-num">${run.runno}</div>
+            <div class="run-meta">
+              <div class="run-routes">${routesDisplay || '—'}</div>
+            </div>
           </div>
-          <div class="run-actions">${paddleBtn}</div>
+          <div class="card-head-right">
+            <div class="run-day">${run.day}</div>
+            <div class="run-actions">${paddleBtn}</div>
+          </div>
         </div>
         <div class="stats-row">
           <div class="stat">
@@ -1041,9 +1132,9 @@ function render() {
           <div class="stat">
             <div class="stat-label">Pay hrs</div>
             <div class="stat-val pay">${run.pay || '—'}</div>
-            ${run.pullout2 ? `<div class="swing-badge">⇌ swing</div>` : ''}
           </div>
         </div>
+        ${swingHtml}
         ${segsHtml ? `<div class="timeline">${segsHtml}</div>` : ''}
       </div>
     `;
