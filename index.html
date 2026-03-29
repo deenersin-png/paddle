@@ -389,28 +389,30 @@ header {
 @media (max-width: 768px) {
   .card-head-top {
     justify-content: flex-start;
-    gap: 4px;
-    padding: 5px 8px;
-    flex-wrap: wrap;
+    gap: 3px;
+    padding: 4px 8px;
+    flex-wrap: nowrap;
   }
 
   .run-day {
-    font-size: 10px;
-    letter-spacing: .06em;
+    font-size: 9px;
+    letter-spacing: .05em;
+    flex-shrink: 0;
   }
 
   .run-num-label {
-    display: inline;
-    font-size: 10px;
+    display: none;
   }
 
   .run-num {
-    font-size: 14px;
+    font-size: 13px;
+    flex-shrink: 0;
   }
 
   .btn-paddle {
-    font-size: 8px;
-    padding: 2px 4px;
+    font-size: 7px;
+    padding: 2px 3px;
+    flex-shrink: 0;
   }
 
   .card-head-bottom {
