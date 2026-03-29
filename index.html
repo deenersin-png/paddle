@@ -291,45 +291,87 @@ header {
 
 .card-head {
   display: grid;
-  grid-template-columns: 50px 1fr;
+  grid-template-rows: auto auto;
   gap: 0;
   border-bottom:1px solid var(--line);
   background:var(--ink3);
-  min-height: auto;
 }
 
-.card-head-left {
+.card-head-top {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 8px 0px 8px 8px;
+  justify-content: flex-end;
+  padding: 6px 12px;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.run-day {
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--amber);
+  flex-shrink: 0;
+}
+
+.card.day-Sunday .run-day { color:var(--green); }
+.card.day-Weekday .run-day { color:var(--amber); }
+.card.day-Saturday .run-day { color:var(--blue); }
+
+.run-num-label {
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:600;
+  color:var(--bright);
+  flex-shrink: 0;
 }
 
 .run-num {
   font-family:var(--mono);
-  font-size:24px;
+  font-size:16px;
   font-weight:700;
   color:var(--amber);
   line-height:1;
-  text-align: center;
-  flex: 1;
+  flex-shrink: 0;
 }
 
 .card.day-Sunday .run-num { color:var(--green); }
 .card.day-Weekday .run-num { color:var(--amber); }
 .card.day-Saturday .run-num { color:var(--blue); }
 
-.card-head-right {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 0;
+.btn-paddle {
+  font-family:var(--mono);
+  font-size:9px;
+  background:none;
+  border:1px solid var(--line2);
+  color:var(--mid);
+  padding:3px 6px;
+  border-radius:3px;
+  cursor:pointer;
+  text-decoration:none;
+  display:none;
+  align-items:center;
+  gap:3px;
+  transition:all .15s;
+  white-space:nowrap;
+  flex-shrink: 0;
 }
 
-.card-head-top {
+.btn-paddle.show {
+  display: inline-flex;
+}
+
+.btn-paddle:hover{
+  border-color:var(--amber);
+  color:var(--amber);
+  background:var(--amber-dim);
+}
+
+.card-head-bottom {
   display: flex;
   align-items: center;
-  padding: 3px 10px;
-  min-height: 18px;
+  padding: 6px 12px;
 }
 
 .run-routes {
@@ -340,25 +382,6 @@ header {
   letter-spacing:.01em;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.card-head-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 3px 10px;
-  gap: 6px;
-  min-height: 18px;
-}
-
-.run-day {
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--amber);
-  flex-shrink: 0;
 }
 
 .card.day-Sunday .run-day { color:var(--green); }
@@ -430,21 +453,21 @@ header {
 .stat-val.pay { color:var(--amber); }
 
 .swing-section {
-  padding:8px 12px;
+  padding:6px 12px;
   border-top:1px solid var(--line);
   background:var(--ink3);
   font-family:var(--mono);
-  font-size:12px;
+  font-size:10px;
   color:var(--mid);
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .swing-item {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   white-space: nowrap;
 }
 
@@ -1115,17 +1138,14 @@ function render() {
     return `
       <div class="card day-${run.day}">
         <div class="card-head">
-          <div class="card-head-left">
+          <div class="card-head-top">
+            <div class="run-day">${run.day}</div>
+            <div class="run-num-label">Run#:</div>
             <div class="run-num">${run.runno}</div>
+            <div class="run-actions">${paddleBtn}</div>
           </div>
-          <div class="card-head-right">
-            <div class="card-head-top">
-              <div class="run-routes">${routesDisplay || '—'}</div>
-            </div>
-            <div class="card-head-bottom">
-              <div class="run-day">${run.day}</div>
-              <div class="run-actions">${paddleBtn}</div>
-            </div>
+          <div class="card-head-bottom">
+            <div class="run-routes">${routesDisplay || '—'}</div>
           </div>
         </div>
         <div class="stats-row">
