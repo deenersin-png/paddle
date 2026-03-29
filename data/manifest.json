@@ -6,6 +6,11 @@
       "days": ["Weekday", "Saturday", "Sunday"]
     },
     {
+      "name": "elmwood",
+      "label": "Elmwood",
+      "days": ["Weekday", "Saturday", "Sunday"]
+    },
+    {
       "name": "midvale",
       "label": "Midvale",
       "days": ["Weekday", "Saturday", "Sunday"]
