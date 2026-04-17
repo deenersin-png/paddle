@@ -6,8 +6,8 @@
       "days": ["Weekday", "Saturday", "Sunday"]
     },
      {
-      "name": "victory",
-      "label": "Victory",
+      "name": "vicktory",
+      "label": "Vicktory",
       "days": ["Weekday", "Saturday", "Sunday"]
     },
     {
